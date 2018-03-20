@@ -37,12 +37,14 @@ namespace NotificationService.Repository.Context.Configurations
 
             builder.Property(s => s.IsReaded)
                 .HasColumnName("isreaded");
-                
+
 
             builder.Property(s => s.CreatedDate)
                 .HasColumnName("datecreated")
                 .ValueGeneratedOnAddOrUpdate()
-                .IsRequired();
+                .HasValueGenerator<DateGenerator>();
+
+               
 
             builder.Property(s => s.Protocol)
                 .HasColumnName("protocol")

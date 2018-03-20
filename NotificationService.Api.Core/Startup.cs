@@ -47,6 +47,14 @@ namespace NotificationService.Api.Core
             {
                 c.SwaggerDoc("v1", new Info { Title = "Notification API", Version = "v1" });
             });
+
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Notification, Shared.DTO.Notification>();
+                cfg.CreateMap<Shared.DTO.Notification, Notification>();
+            });
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
 
@@ -68,12 +76,8 @@ namespace NotificationService.Api.Core
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Notification API V1");
             });
 
-
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Notification, Shared.DTO.Notification>();
-                cfg.CreateMap<Shared.DTO.Notification, Notification>();
-            });
+          
+           
         }
     }
 }

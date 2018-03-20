@@ -17,4 +17,15 @@ namespace NotificationService.Repository.Context.Configurations
             return Guid.NewGuid();
         }
     }
+
+    public class DateGenerator : ValueGenerator<DateTime>
+    {
+        public override bool GeneratesTemporaryValues => false;
+
+
+        public override DateTime Next(EntityEntry entry)
+        {
+            return DateTime.Now;
+        }
+    }
 }
