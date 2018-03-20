@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  notificationservice.api.core:
+    image: notificationservice.api.core
+    build:
+      context: .
+      dockerfile: NotificationService.Api.Core/Dockerfile
