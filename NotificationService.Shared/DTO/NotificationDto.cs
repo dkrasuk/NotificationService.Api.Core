@@ -20,9 +20,8 @@ namespace NotificationService.Shared.DTO
         public string Body { get; set; }
 
         public bool IsReaded { get; set; }
-
         public DateTime? CreatedDate { get; set; }
-
+        public DateTime? ModifyDate { get; set; }
         public ProtocolsEnum Protocol { get; set; }
     }
 }

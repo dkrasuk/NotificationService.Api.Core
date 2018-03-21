@@ -40,11 +40,11 @@ namespace NotificationService.Repository.Context.Configurations
 
 
             builder.Property(s => s.CreatedDate)
-                .HasColumnName("datecreated")
-                .ValueGeneratedOnAddOrUpdate()
-                .HasValueGenerator<DateGenerator>();
+                .HasColumnName("created_date")
+                .IsRequired();
 
-               
+            builder.Property(s => s.ModifyDate)
+                .HasColumnName("modify_date");
 
             builder.Property(s => s.Protocol)
                 .HasColumnName("protocol")

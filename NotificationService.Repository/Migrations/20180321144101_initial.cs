@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace NotificationService.Repository.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,8 +19,9 @@ namespace NotificationService.Repository.Migrations
                     id = table.Column<Guid>(nullable: false),
                     body = table.Column<string>(nullable: true),
                     chanel = table.Column<string>(nullable: true),
-                    datecreated = table.Column<DateTime>(nullable: false),
-                    isreaded = table.Column<bool>(nullable: false, defaultValue: false),
+                    created_date = table.Column<DateTime>(nullable: false),
+                    isreaded = table.Column<bool>(nullable: false),
+                    modify_date = table.Column<DateTime>(nullable: true),
                     protocol = table.Column<int>(nullable: false),
                     receiver = table.Column<string>(nullable: true),
                     title = table.Column<string>(nullable: true),

@@ -35,12 +35,14 @@ namespace NotificationService.Repository.Migrations
                     b.Property<string>("Channel")
                         .HasColumnName("chanel");
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnName("datecreated");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnName("created_date");
 
                     b.Property<bool>("IsReaded")
                         .HasColumnName("isreaded");
+
+                    b.Property<DateTime?>("ModifyDate")
+                        .HasColumnName("modify_date");
 
                     b.Property<int>("Protocol")
                         .HasColumnName("protocol");

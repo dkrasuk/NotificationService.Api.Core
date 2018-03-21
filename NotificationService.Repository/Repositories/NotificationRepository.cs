@@ -27,15 +27,18 @@ namespace NotificationService.Repository.Repositories
 
         public async Task CreateOrUpdateAsync(Notification notification)
         {
+
             using (var db = _dbContext)
             {
 
                 if (notification.Id != Guid.Empty && db.Notifications.Any(n => n.Id == notification.Id))
                 {
+                    notification.ModifyDate = DateTime.UtcNow;
                     db.Notifications.Update(notification);
                 }
                 else
                 {
+                    notification.CreatedDate = DateTime.UtcNow;
                     db.Notifications.Add(notification);
                 }
 

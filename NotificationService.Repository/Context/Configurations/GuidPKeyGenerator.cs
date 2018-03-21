@@ -25,7 +25,7 @@ namespace NotificationService.Repository.Context.Configurations
 
         public override DateTime Next(EntityEntry entry)
         {
-            return DateTime.Now;
+            return DateTime.UtcNow;
         }
     }
 }

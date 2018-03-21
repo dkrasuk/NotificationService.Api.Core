@@ -22,6 +22,8 @@ namespace NotificationService.Shared.Data
 
         public DateTime? CreatedDate { get; set; }
 
+        public DateTime? ModifyDate { get; set; }
+
         public ProtocolsEnum Protocol { get; set; }
     }
 }

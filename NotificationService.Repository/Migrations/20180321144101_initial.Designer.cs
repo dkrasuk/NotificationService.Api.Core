@@ -13,8 +13,8 @@ using System;
 namespace NotificationService.Repository.Migrations
 {
     [DbContext(typeof(NotificationContext))]
-    [Migration("20180319125804_Initial")]
-    partial class Initial
+    [Migration("20180321144101_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,7 +26,7 @@ namespace NotificationService.Repository.Migrations
 
             modelBuilder.Entity("NotificationService.Shared.Data.Notification", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id");
 
@@ -36,14 +36,14 @@ namespace NotificationService.Repository.Migrations
                     b.Property<string>("Channel")
                         .HasColumnName("chanel");
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .IsRequired()
-                        .HasColumnName("datecreated");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnName("created_date");
 
                     b.Property<bool>("IsReaded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("isreaded")
-                        .HasDefaultValue(false);
+                        .HasColumnName("isreaded");
+
+                    b.Property<DateTime?>("ModifyDate")
+                        .HasColumnName("modify_date");
 
                     b.Property<int>("Protocol")
                         .HasColumnName("protocol");
