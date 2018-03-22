@@ -18,11 +18,13 @@ namespace NotificationService.Repository.Context
         {
             modelBuilder.HasDefaultSchema("Notification");
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationProtocolConfiguration());
             base.OnModelCreating(modelBuilder);
         }
 
 
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<NotificationProtocol> NotificationProtocols { get; set; }
     }
 }
 

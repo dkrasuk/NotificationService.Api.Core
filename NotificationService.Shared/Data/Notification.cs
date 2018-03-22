@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace NotificationService.Shared.Data
 {
@@ -23,7 +25,8 @@ namespace NotificationService.Shared.Data
         public DateTime? CreatedDate { get; set; }
 
         public DateTime? ModifyDate { get; set; }
-
-        public ProtocolsEnum Protocol { get; set; }
+      //  public int NotificationProtocolId { get; set; }
+       
+        public NotificationProtocol Protocol { get; set; }
     }
 }

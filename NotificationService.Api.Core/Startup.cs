@@ -46,6 +46,7 @@ namespace NotificationService.Api.Core
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Notification API", Version = "v1" });
+                c.CustomSchemaIds(x=>x.FullName);
             });
 
             var config = new AutoMapper.MapperConfiguration(cfg =>

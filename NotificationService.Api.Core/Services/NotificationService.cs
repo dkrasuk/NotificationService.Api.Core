@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using NotificationService.Shared.Data;
+using NotificationService.Shared.DTO;
 using NotificationService.Shared.Repositories;
+using Notification = NotificationService.Shared.Data.Notification;
 
 namespace NotificationService.Api.Core.Services
 {
@@ -25,17 +27,26 @@ namespace NotificationService.Api.Core.Services
         }
 
 
-        public async Task<Shared.DTO.Notification[]> GetAllAsync()
+        public async Task<List<Shared.DTO.Notification>> GetAllAsync()
         {
             var notifications = (await _notificationRepository.GetAsync()).ToArray();
-            var notificationsDto = _mapper.Map<Shared.DTO.Notification[]>(notifications);
+            var notificationsDto = new List<Shared.DTO.Notification>();
+
+            foreach (var notification in notifications)
+            {
+                notificationsDto.Add(NotificationDataToDto(notification));
+            }
+
             return notificationsDto;
         }
 
         public async Task<Shared.DTO.Notification> GetAsyncById(Guid id)
         {
             var notification = (await _notificationRepository.GetAsync(n => n.Id == id));
-            var notificationDto = _mapper.Map<Shared.DTO.Notification>(notification);
+            if (notification == null)
+                return null;
+
+            var notificationDto = NotificationDataToDto(notification);
             return notificationDto;
         }
 
@@ -47,9 +58,57 @@ namespace NotificationService.Api.Core.Services
                                  "So it's impossible to create notification of this type.");
                 return;
             }
-            var notificationData = _mapper.Map<Notification>(notification);
+
+            var notificationData = NotificationDtoToData(notification);
+
             await _notificationRepository.CreateOrUpdateAsync(notificationData);
         }
+
+        #region Private Methods
+        private Notification NotificationDtoToData(Shared.DTO.Notification notificationDto)
+        {
+            var data = new Notification()
+            {
+                Id = notificationDto.Id,
+                Protocol = new NotificationProtocol()
+                {
+                    Id = notificationDto.Protocol.Id,
+                    Protocol = notificationDto.Protocol.Protocol
+                },
+                ModifyDate = notificationDto.ModifyDate,
+                CreatedDate = notificationDto.CreatedDate,
+                Body = notificationDto.Body,
+                Channel = notificationDto.Channel,
+                IsReaded = notificationDto.IsReaded,
+                Receiver = notificationDto.Receiver,
+                Title = notificationDto.Title,
+                Type = notificationDto.Type
+            };
+            return data;
+        }
+
+        private Shared.DTO.Notification NotificationDataToDto(Notification notificationData)
+        {
+            var notificationDto = new Shared.DTO.Notification()
+            {
+                Protocol = new NotificationProtocolDto()
+                {
+                    Protocol = notificationData.Protocol.Protocol,
+                    Id = notificationData.Protocol.Id
+                },
+                Id = notificationData.Id,
+                ModifyDate = notificationData.ModifyDate,
+                Title = notificationData.Title,
+                Receiver = notificationData.Receiver,
+                Channel = notificationData.Channel,
+                Type = notificationData.Type,
+                CreatedDate = notificationData.CreatedDate,
+                Body = notificationData.Body,
+                IsReaded = notificationData.IsReaded
+            };
+            return notificationDto;
+        }
+        #endregion
 
     }
 }

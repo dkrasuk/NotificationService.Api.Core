@@ -11,6 +11,7 @@ namespace NotificationService.Repository.Context
     public interface INotificationContext : IDisposable
     {
         DbSet<Notification> Notifications { get; set; }
+        DbSet<NotificationProtocol> NotificationProtocols { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

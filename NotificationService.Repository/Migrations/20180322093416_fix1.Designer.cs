@@ -7,14 +7,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using NotificationService.Repository.Context;
-using NotificationService.Shared.Data;
 using System;
 
 namespace NotificationService.Repository.Migrations
 {
     [DbContext(typeof(NotificationContext))]
-    [Migration("20180321144101_initial")]
-    partial class initial
+    [Migration("20180322093416_fix1")]
+    partial class fix1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,7 +35,8 @@ namespace NotificationService.Repository.Migrations
                     b.Property<string>("Channel")
                         .HasColumnName("chanel");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
+                        .IsRequired()
                         .HasColumnName("created_date");
 
                     b.Property<bool>("IsReaded")
@@ -45,8 +45,8 @@ namespace NotificationService.Repository.Migrations
                     b.Property<DateTime?>("ModifyDate")
                         .HasColumnName("modify_date");
 
-                    b.Property<int>("Protocol")
-                        .HasColumnName("protocol");
+                    b.Property<int?>("ProtocolId")
+                        .IsRequired();
 
                     b.Property<string>("Receiver")
                         .HasColumnName("receiver");
@@ -61,7 +61,33 @@ namespace NotificationService.Repository.Migrations
 
                     b.HasIndex("Id");
 
+                    b.HasIndex("ProtocolId");
+
                     b.ToTable("notifications");
+                });
+
+            modelBuilder.Entity("NotificationService.Shared.Data.NotificationProtocol", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("protocol_id");
+
+                    b.Property<string>("Protocol")
+                        .HasColumnName("protocol");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("notification_protocol");
+                });
+
+            modelBuilder.Entity("NotificationService.Shared.Data.Notification", b =>
+                {
+                    b.HasOne("NotificationService.Shared.Data.NotificationProtocol", "Protocol")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ProtocolId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

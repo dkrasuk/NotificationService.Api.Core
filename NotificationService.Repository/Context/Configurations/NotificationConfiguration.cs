@@ -46,9 +46,11 @@ namespace NotificationService.Repository.Context.Configurations
             builder.Property(s => s.ModifyDate)
                 .HasColumnName("modify_date");
 
-            builder.Property(s => s.Protocol)
-                .HasColumnName("protocol")
-                .IsRequired();
+            builder.HasOne(p => p.Protocol)
+                .WithMany(c => c.Notifications);
+
+
+
         }
     }
 }

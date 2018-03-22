@@ -50,7 +50,8 @@ namespace NotificationService.Repository.Repositories
         {
             using (var db = _dbContext)
             {
-                return await db.Notifications.ToArrayAsync();
+                var a = await db.Notifications.Include(p => p.Protocol).ToArrayAsync();
+                return a;
             }
         }
 
@@ -58,7 +59,7 @@ namespace NotificationService.Repository.Repositories
         {
             using (var db = _dbContext)
             {
-                return await db.Notifications.Where(predicate).FirstOrDefaultAsync();
+                return await db.Notifications.Include(p=>p.Protocol).Where(predicate).FirstOrDefaultAsync();
             }
         }
     }

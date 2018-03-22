@@ -12,9 +12,10 @@ using System;
 namespace NotificationService.Repository.Migrations
 {
     [DbContext(typeof(NotificationContext))]
-    partial class NotificationContextModelSnapshot : ModelSnapshot
+    [Migration("20180322085926_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +45,7 @@ namespace NotificationService.Repository.Migrations
                     b.Property<DateTime?>("ModifyDate")
                         .HasColumnName("modify_date");
 
-                    b.Property<int?>("ProtocolId")
-                        .IsRequired();
+                    b.Property<int>("NotificationProtocolId");
 
                     b.Property<string>("Receiver")
                         .HasColumnName("receiver");
@@ -60,7 +60,7 @@ namespace NotificationService.Repository.Migrations
 
                     b.HasIndex("Id");
 
-                    b.HasIndex("ProtocolId");
+                    b.HasIndex("NotificationProtocolId");
 
                     b.ToTable("notifications");
                 });
@@ -85,7 +85,7 @@ namespace NotificationService.Repository.Migrations
                 {
                     b.HasOne("NotificationService.Shared.Data.NotificationProtocol", "Protocol")
                         .WithMany("Notifications")
-                        .HasForeignKey("ProtocolId")
+                        .HasForeignKey("NotificationProtocolId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
