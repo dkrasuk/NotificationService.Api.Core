@@ -95,15 +95,17 @@ namespace NotificationService.Api.Core
                 .Build();
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
-                .WriteTo.Slack(new SlackSinkOptions
-                {
-                    WebHookUrl = "https://hooks.slack.com/services/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",
-                    CustomChannel = "errorlogs",
-                    Period = TimeSpan.FromSeconds(10),
-                    ShowDefaultAttachments = false,
-                    ShowExceptionAttachments = false,
-                    MinimumLogEventLevel = LogEventLevel.Error
-                })
+
+                //Send to Slack without appsetings.json
+                //.WriteTo.Slack(new SlackSinkOptions
+                //{
+                //    WebHookUrl = "https://hooks.slack.com/services/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",
+                //    CustomChannel = "errorlogs",
+                //    Period = TimeSpan.FromSeconds(10),
+                //    ShowDefaultAttachments = false,
+                //    ShowExceptionAttachments = false,
+                //    MinimumLogEventLevel = LogEventLevel.Error
+                //})
                 .CreateLogger();
         }
     }
