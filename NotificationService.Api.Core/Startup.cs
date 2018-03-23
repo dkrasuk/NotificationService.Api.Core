@@ -16,7 +16,11 @@ using NotificationService.Repository.Context;
 using NotificationService.Repository.Repositories;
 using NotificationService.Shared.Data;
 using NotificationService.Shared.Repositories;
+using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
+using Serilog.Events;
+using Serilog.Sinks.Slack;
+
 
 namespace NotificationService.Api.Core
 {
@@ -65,7 +69,7 @@ namespace NotificationService.Api.Core
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logger)
         {
             if (env.IsDevelopment())
             {
@@ -73,6 +77,7 @@ namespace NotificationService.Api.Core
             }
 
             app.UseMvc();
+            
 
             //Connect Swagger
             app.UseSwagger();
@@ -82,7 +87,24 @@ namespace NotificationService.Api.Core
             });
 
 
-
+            //Connect SeriLog with appsetings.json   
+            logger.AddSerilog();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .WriteTo.Slack(new SlackSinkOptions
+                {
+                    WebHookUrl = "https://hooks.slack.com/services/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",
+                    CustomChannel = "errorlogs",
+                    Period = TimeSpan.FromSeconds(10),
+                    ShowDefaultAttachments = false,
+                    ShowExceptionAttachments = false,
+                    MinimumLogEventLevel = LogEventLevel.Error
+                })
+                .CreateLogger();
         }
     }
 }
