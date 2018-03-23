@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
@@ -17,13 +16,13 @@ namespace NotificationService.Repository.Migrations
                 schema: "Notification",
                 columns: table => new
                 {
-                    protocol_id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    uid_protocol = table.Column<Guid>(nullable: false),
+                    protocol_id = table.Column<int>(nullable: false),
                     protocol = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_notification_protocol", x => x.protocol_id);
+                    table.PrimaryKey("PK_notification_protocol", x => x.uid_protocol);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,7 +36,7 @@ namespace NotificationService.Repository.Migrations
                     created_date = table.Column<DateTime>(nullable: false),
                     isreaded = table.Column<bool>(nullable: false),
                     modify_date = table.Column<DateTime>(nullable: true),
-                    NotificationProtocolId = table.Column<int>(nullable: false),
+                    Protocoluid_protocol = table.Column<Guid>(nullable: false),
                     receiver = table.Column<string>(nullable: true),
                     title = table.Column<string>(nullable: true),
                     type = table.Column<string>(nullable: true)
@@ -46,11 +45,11 @@ namespace NotificationService.Repository.Migrations
                 {
                     table.PrimaryKey("PK_notifications", x => x.id);
                     table.ForeignKey(
-                        name: "FK_notifications_notification_protocol_NotificationProtocolId",
-                        column: x => x.NotificationProtocolId,
+                        name: "FK_notifications_notification_protocol_Protocoluid_protocol",
+                        column: x => x.Protocoluid_protocol,
                         principalSchema: "Notification",
                         principalTable: "notification_protocol",
-                        principalColumn: "protocol_id",
+                        principalColumn: "uid_protocol",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -61,16 +60,22 @@ namespace NotificationService.Repository.Migrations
                 column: "protocol_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_notification_protocol_uid_protocol",
+                schema: "Notification",
+                table: "notification_protocol",
+                column: "uid_protocol");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_notifications_id",
                 schema: "Notification",
                 table: "notifications",
                 column: "id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_notifications_NotificationProtocolId",
+                name: "IX_notifications_Protocoluid_protocol",
                 schema: "Notification",
                 table: "notifications",
-                column: "NotificationProtocolId");
+                column: "Protocoluid_protocol");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

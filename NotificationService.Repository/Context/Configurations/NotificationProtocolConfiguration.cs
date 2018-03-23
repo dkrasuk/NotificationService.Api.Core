@@ -13,10 +13,17 @@ namespace NotificationService.Repository.Context.Configurations
         {
             builder.ToTable("notification_protocol");
             builder.HasIndex(p => p.Id);
+            builder.HasIndex(p => p.uid_protocol);
+
+            builder.Property(p => p.uid_protocol)
+                .HasColumnName("uid_protocol")
+                .ValueGeneratedOnAdd()
+                .HasValueGenerator<GuidPKeyGenerator>()
+                .IsRequired();
 
             builder.Property(p => p.Id)
-                .HasColumnName("protocol_id")
-                .IsRequired();
+                .HasColumnName("protocol_id");
+                
 
             builder.Property(p => p.Protocol)
                 .HasColumnName("protocol");

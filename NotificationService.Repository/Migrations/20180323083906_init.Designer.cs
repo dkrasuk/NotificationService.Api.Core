@@ -12,8 +12,8 @@ using System;
 namespace NotificationService.Repository.Migrations
 {
     [DbContext(typeof(NotificationContext))]
-    [Migration("20180322093416_fix1")]
-    partial class fix1
+    [Migration("20180323083906_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,7 +45,7 @@ namespace NotificationService.Repository.Migrations
                     b.Property<DateTime?>("ModifyDate")
                         .HasColumnName("modify_date");
 
-                    b.Property<int?>("ProtocolId")
+                    b.Property<Guid?>("Protocoluid_protocol")
                         .IsRequired();
 
                     b.Property<string>("Receiver")
@@ -61,23 +61,28 @@ namespace NotificationService.Repository.Migrations
 
                     b.HasIndex("Id");
 
-                    b.HasIndex("ProtocolId");
+                    b.HasIndex("Protocoluid_protocol");
 
                     b.ToTable("notifications");
                 });
 
             modelBuilder.Entity("NotificationService.Shared.Data.NotificationProtocol", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("uid_protocol")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("uid_protocol");
+
+                    b.Property<int>("Id")
                         .HasColumnName("protocol_id");
 
                     b.Property<string>("Protocol")
                         .HasColumnName("protocol");
 
-                    b.HasKey("Id");
+                    b.HasKey("uid_protocol");
 
                     b.HasIndex("Id");
+
+                    b.HasIndex("uid_protocol");
 
                     b.ToTable("notification_protocol");
                 });
@@ -86,7 +91,7 @@ namespace NotificationService.Repository.Migrations
                 {
                     b.HasOne("NotificationService.Shared.Data.NotificationProtocol", "Protocol")
                         .WithMany("Notifications")
-                        .HasForeignKey("ProtocolId")
+                        .HasForeignKey("Protocoluid_protocol")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
