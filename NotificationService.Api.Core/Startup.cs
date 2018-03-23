@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NotificationService.Api.Core.Services;
 using NotificationService.Api.Core.Services.Interfaces;
 using NotificationService.Repository.Context;
 using NotificationService.Repository.Repositories;
@@ -41,6 +42,7 @@ namespace NotificationService.Api.Core
             services.AddTransient<INotificationContext, NotificationContext>();
             services.AddTransient<INotificationRepository<Notification>, NotificationRepository>();
             services.AddTransient<INotificationService, Services.NotificationService>();
+            services.AddTransient<ISmtpService, SmtpService>();
 
             //Add Swagger
             services.AddSwaggerGen(c =>

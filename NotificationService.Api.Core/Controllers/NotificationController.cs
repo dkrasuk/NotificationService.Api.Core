@@ -12,12 +12,14 @@ namespace NotificationService.Api.Core.Controllers
     public class NotificationController : Controller
     {
         private readonly INotificationService _notificationService;
+        private readonly ISmtpService _smtpService;
 
-        public NotificationController(INotificationService notificationService)
+        public NotificationController(INotificationService notificationService, ISmtpService smtpService)
         {
             _notificationService = notificationService;
+            _smtpService = smtpService;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -30,10 +32,13 @@ namespace NotificationService.Api.Core.Controllers
             return Ok(await _notificationService.GetAsyncById(id));
         }
 
-        
+
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody] Notification notification)
         {
+
+            await _smtpService.SendAsync(notification.Receiver, notification.Body, notification.Title);
+
             await _notificationService.CreateAsync(notification);
             return Ok();
         }
