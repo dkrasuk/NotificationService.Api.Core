@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using NotificationService.Api.Core.Services.Interfaces;
 using NotificationService.Shared.Data;
 using NotificationService.Shared.DTO;
 using NotificationService.Shared.Repositories;
@@ -11,7 +12,7 @@ using Notification = NotificationService.Shared.Data.Notification;
 
 namespace NotificationService.Api.Core.Services
 {
-    public class NotificationService
+    public class NotificationService : INotificationService
     {
         private readonly INotificationRepository<Notification> _notificationRepository;
         private readonly ILogger<NotificationService> _logger;

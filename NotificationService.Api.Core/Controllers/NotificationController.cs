@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using NotificationService.Api.Core.Services.Interfaces;
 using NotificationService.Shared.DTO;
 
 namespace NotificationService.Api.Core.Controllers
@@ -10,9 +11,9 @@ namespace NotificationService.Api.Core.Controllers
     [Route("api/[controller]")]
     public class NotificationController : Controller
     {
-        private readonly Services.NotificationService _notificationService;
+        private readonly INotificationService _notificationService;
 
-        public NotificationController(Services.NotificationService notificationService)
+        public NotificationController(INotificationService notificationService)
         {
             _notificationService = notificationService;
         }
@@ -35,18 +36,6 @@ namespace NotificationService.Api.Core.Controllers
         {
             await _notificationService.CreateAsync(notification);
             return Ok();
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

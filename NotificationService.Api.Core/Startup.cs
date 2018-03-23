@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NotificationService.Api.Core.Services.Interfaces;
 using NotificationService.Repository.Context;
 using NotificationService.Repository.Repositories;
 using NotificationService.Shared.Data;
@@ -35,20 +36,21 @@ namespace NotificationService.Api.Core
                 , x => x.MigrationsHistoryTable("__EFMigrationsHistory", "Notification")
                 ).EnableSensitiveDataLogging());
             services.AddMvc();
-            services.AddAutoMapper();
             services.AddLogging();
 
-            // services.AddTransient<Func<INotificationContext>>(s => () => new NotificationContext());
             services.AddTransient<INotificationContext, NotificationContext>();
             services.AddTransient<INotificationRepository<Notification>, NotificationRepository>();
-            services.AddTransient<Services.NotificationService>();
+            services.AddTransient<INotificationService, Services.NotificationService>();
 
+            //Add Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Notification API", Version = "v1" });
-                c.CustomSchemaIds(x=>x.FullName);
+                c.CustomSchemaIds(x => x.FullName);
             });
 
+            //Add AutoMApper
+            services.AddAutoMapper();
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Notification, Shared.DTO.Notification>();
@@ -77,8 +79,8 @@ namespace NotificationService.Api.Core
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Notification API V1");
             });
 
-          
-           
+
+
         }
     }
 }
