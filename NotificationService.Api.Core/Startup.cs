@@ -78,6 +78,7 @@ namespace NotificationService.Api.Core
             }
 
             app.UseMvc();
+            app.UseMiddleware<LoggingServiceMiddleware>();
             app.UseMiddleware<PingServiceMiddleware>();
             app.UseMiddleware<TimeServiceMiddleware>();
 
@@ -87,25 +88,6 @@ namespace NotificationService.Api.Core
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Notification API V1");
             });
-
-
-            //Connect SeriLog with appsetings.json   
-            logger.AddSerilog();
-
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
-
-                ////Send to Slack without appsetings.json
-                //.WriteTo.Slack(new SlackSinkOptions
-                //{
-                //    WebHookUrl = "https://hooks.slack.com/services/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",
-                //    CustomChannel = "errorlogs",
-                //    Period = TimeSpan.FromSeconds(10),
-                //    ShowDefaultAttachments = false,
-                //    ShowExceptionAttachments = false,
-                //    MinimumLogEventLevel = LogEventLevel.Error
-                //})
-                .CreateLogger();
         }
     }
 }
