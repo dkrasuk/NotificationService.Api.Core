@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NotificationService.Api.Core.Middleware;
 using NotificationService.Api.Core.Services;
 using NotificationService.Api.Core.Services.Interfaces;
 using NotificationService.Repository.Context;
@@ -77,7 +78,8 @@ namespace NotificationService.Api.Core
             }
 
             app.UseMvc();
-            
+            app.UseMiddleware<PingServiceMiddleware>();
+            app.UseMiddleware<TimeServiceMiddleware>();
 
             //Connect Swagger
             app.UseSwagger();
@@ -89,14 +91,11 @@ namespace NotificationService.Api.Core
 
             //Connect SeriLog with appsetings.json   
             logger.AddSerilog();
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json")
-                .Build();
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
 
-                //Send to Slack without appsetings.json
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+
+                ////Send to Slack without appsetings.json
                 //.WriteTo.Slack(new SlackSinkOptions
                 //{
                 //    WebHookUrl = "https://hooks.slack.com/services/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",
